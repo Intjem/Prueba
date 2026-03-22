@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mi Web</title>
+</head>
+<body>
+
+<h1>Guardar nombre</h1>
+
+<input type="text" id="nombre">
+<button onclick="guardar()">Guardar</button>
+
+<ul id="lista"></ul>
+
+<script>
+function guardar() {
+  const nombre = document.getElementById("nombre").value;
+
+  fetch("http://localhost:3000/guardar", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ nombre })
+  }).then(() => cargar());
+}
+
+function cargar() {
+  fetch("http://localhost:3000/usuarios")
+    .then(res => res.json())
+    .then(data => {
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "";
+      data.forEach(u => {
+        lista.innerHTML += "<li>" + u.nombre + "</li>";
+      });
+    });
+}
+
+cargar();
+</script>
+
+</body>
+</html>
